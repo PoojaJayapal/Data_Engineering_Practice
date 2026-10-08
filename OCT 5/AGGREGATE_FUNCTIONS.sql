@@ -26,6 +26,3 @@ select count(*) as order_count from sales_orders;
 select avg(unit_price) as avg_price from sales_orders;
 select max(unit_price) as max_price from sales_orders;
 select min(unit_price) as min_price from sales_orders;
-
-
--- how it runs: from > where > group by > having > select > order by
