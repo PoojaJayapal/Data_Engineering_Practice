@@ -1,0 +1,13 @@
+products=["Mobile","Laptop","Tablet","Charger"]
+print(products[0])
+print(products[1])
+print(products[2])
+print(products[-1])
+products.append("Keyboard")
+print(products)
+products.insert(0,"Mouse")
+print(products)
+products.remove("Mouse")
+print(products)
+products.pop()
+print(products)
