@@ -1,0 +1,5 @@
+products=("Mobile","Laptop","Tablet","Charger")
+print(products)
+print(products[0])
+print(products.count("Tablet"))
+print(products.index("Tablet"))
