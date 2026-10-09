@@ -51,17 +51,17 @@ for record in Sort_sales:
 Sort_region = sorted(sales, key=lambda t: t[0])
 for record in Sort_region:
     print(record)
-Tasks
+# Tasks
 
-1. Display all tuples.
-2. Display only the region from every tuple.
-3. Display only the sales amount.
-4. Find sales greater than 12000 .
-5. Calculate total sales.
-6. Find the highest and lowest sales amount.
-7. Create a list containing only sales amounts.
-8. Find unique regions using a set.
-9. Sort the tuples based on sales amount.
-10. Sort the tuples based on region name.
+# 1. Display all tuples.
+# 2. Display only the region from every tuple.
+# 3. Display only the sales amount.
+# 4. Find sales greater than 12000 .
+# 5. Calculate total sales.
+# 6. Find the highest and lowest sales amount.
+# 7. Create a list containing only sales amounts.
+# 8. Find unique regions using a set.
+# 9. Sort the tuples based on sales amount.
+# 10. Sort the tuples based on region name.
 
 
