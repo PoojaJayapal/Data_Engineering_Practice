@@ -15,3 +15,13 @@ delivered=df.query("status=='Delivered'")
 print(delivered)
 result=df.query("amount>20000")
 print(result)
+#EG 1
+print(df["status"].value_counts())
+#EG 2
+result=(df.groupby("status").size())
+print(result)
+#Both EG1 AND EG2 GIVES THE SAME RESULT
+#EG 3
+df["order_date"]=pd.to_datetime(df["order_date"])
+df["month"]=df["order_date"].dt.month
+print(df)
