@@ -1,10 +1,13 @@
 
 use("retail_sales_db");
 
-// Create the campaign feedback collection
-db.createCollection("campaign_feedback");
+// 1. Create the campaign feedback collection
+// Run this only if the collection does not already exist
+if (!db.getCollectionNames().includes("campaign_feedback")) {
+    db.createCollection("campaign_feedback");
+}
 
-// Insert promotional campaign feedback
+// 2. Insert promotional campaign feedback
 db.campaign_feedback.insertMany([
     {
         campaign_id: 101,
@@ -35,8 +38,17 @@ db.campaign_feedback.insertMany([
     }
 ]);
 
-// View all campaign feedback
+// 3. Create indexes
+db.campaign_feedback.createIndex({ store_id: 1 });
+db.campaign_feedback.createIndex({ region: 1 });
+db.campaign_feedback.createIndex({ campaign_name: 1 });
+db.campaign_feedback.createIndex({ rating: 1 });
+
+// 4. Display all campaign feedback
 db.campaign_feedback.find();
 
-// View feedback with ratings of 4 or above
+// 5. Find feedback with ratings of 4 or above
 db.campaign_feedback.find({ rating: { $gte: 4 } });
+
+// 6. Display all indexes
+db.campaign_feedback.getIndexes();
