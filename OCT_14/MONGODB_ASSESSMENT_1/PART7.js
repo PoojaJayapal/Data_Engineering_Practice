@@ -25,7 +25,7 @@ db.products.insertOne({
   price: "25000",
   stock: 20,
   available: true,
-  launch_date: ISODate("2026-03-10T00:00:00.000Z"),
+  launch_date: ISODate("2026-10-14"),
   colors: ["Black"],
   specifications: { warranty_years: 1 }
 })
