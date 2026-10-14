@@ -103,3 +103,37 @@ db.restaurants.find().sort({rating:-1})
 //23. Display the top 3 highest-rated restaurants
 db.restaurants.find().sort({rating:-1}).limit(3)
 
+//DATA TYPES
+// 24. Documents where rating is stored as a numeric value
+db.restaurants.find({ rating: { $type: "number" } })
+
+// 25. Datatype of order_date
+db.orders.aggregate([
+  { $project: { _id: 0, order_id: 1, order_date_type: { $type: "$order_date" } } }
+])
+
+// 26. Datatype of items
+db.orders.aggregate([
+  { $project: { _id: 0, order_id: 1, items_type: { $type: "$items" } } }
+])
+
+// 27a. Insert a test restaurant with rating accidentally stored as a string
+db.restaurants.insertOne({
+  restaurant_id: 107,
+  restaurant_name: "Test Cafe",
+  city: "Pune",
+  cuisine: ["Cafe", "Desserts"],
+  rating: "4.3",
+  active: true,
+  contact: { phone: "9111122222", email: "testcafe@email.com" }
+})
+
+// 27b. Identify it using $type
+db.restaurants.find({ rating: { $type: "string" } })
+
+// 27c. Correct the value so rating becomes numeric
+db.restaurants.updateOne({ restaurant_id: 107 }, { $set: { rating: 4.3 } })
+
+// 27d. Verify: this should now return nothing
+db.restaurants.find({ rating: { $type: "string" } })
+
