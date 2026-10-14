@@ -30,9 +30,9 @@ db.products.find({ price: { $gt: 10000 }, stock: { $gt: 5 } })
 db.products.find({ $or: [ { category: "Electronics" }, { price: { $lt: 5000 } } ] })
 
 // 24. Launched after 1 Feb 2026
-db.products.find({ launchDate: { $gt: ISODate("2026-02-01") } })
+db.products.find({ launch_date: { $gt: ISODate("2026-02-01") } })
 
 // 25. Launched between 1 Jan 2026 and 31 Mar 2026 (inclusive)
 db.products.find({
-  launchDate: { $gte: ISODate("2026-01-01"), $lt: ISODate("2026-04-01") }
+  launch_date: { $gte: ISODate("2026-01-01"), $lt: ISODate("2026-04-01") }
 })
