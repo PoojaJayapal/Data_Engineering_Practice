@@ -277,8 +277,7 @@ db.datatype_demo.insertOne({
 // -- Data type reference table --
 
 | Data Type | Example |
-| String | 	"Laptop" | 
-| Integer |	NumberInt(10) | 
+| String | 	"Laptop" |  
 | Integer |	NumberInt(10) | 
 | Long	| NumberLong(100000) | 
 | Double	| 45999.99 | 
