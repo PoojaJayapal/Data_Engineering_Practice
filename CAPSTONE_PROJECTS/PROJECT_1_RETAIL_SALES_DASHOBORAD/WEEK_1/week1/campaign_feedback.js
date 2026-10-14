@@ -2,7 +2,6 @@
 use("retail_sales_db");
 
 // 1. Create the campaign feedback collection
-// Run this only if the collection does not already exist
 if (!db.getCollectionNames().includes("campaign_feedback")) {
     db.createCollection("campaign_feedback");
 }
