@@ -1,9 +1,8 @@
 
 USE retail_sales_db;
 
--- =====================================
 -- 1. INSERT SAMPLE DATA
--- =====================================
+
 
 -- Insert stores
 INSERT INTO stores (store_name, region, city) VALUES
@@ -36,15 +35,14 @@ VALUES
 (1, 3, 4, 1, '2026-10-03', 5.00),
 (2, 3, 4, 10, '2026-10-03', 2.00);
 
--- =====================================
 -- 2. READ: VIEW ALL SALES
--- =====================================
+
 
 SELECT * FROM sales;
 
--- =====================================
+
 -- 3. READ: VIEW SALES WITH PRODUCT AND STORE DETAILS
--- =====================================
+
 
 SELECT
     s.sale_id,
@@ -57,7 +55,7 @@ FROM sales s
 JOIN products p ON s.product_id = p.product_id
 JOIN stores st ON s.store_id = st.store_id;
 
--- =====================================
+
 -- 4. UPDATE: CHANGE A SALES QUANTITY
 
 
@@ -68,10 +66,8 @@ WHERE sale_id = 1;
 -- Verify the update
 SELECT * FROM sales WHERE sale_id = 1;
 
--- =====================================
--- 5. DELETE: REMOVE A SALES RECORD
--- =====================================
 
+-- 5. DELETE: REMOVE A SALES RECORD
 DELETE FROM sales
 WHERE sale_id = 6;
 
