@@ -1,0 +1,5 @@
+Event E101 registration processing started
+Event E102 payment verified
+Event E103 attendee list generated
+Event E104 cancellation processed
+Event E105 venue confirmed
