@@ -13,7 +13,7 @@ class Employee(BaseModel):
     city: str
 
 
-employees: list[Employee] = []
+employees=[]
 
 
 # Exercise 2: Add employee (POST)
