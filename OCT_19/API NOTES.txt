@@ -1,0 +1,63 @@
+19.10.2026-API Notes
+
+UI LAYER
+--------
+1. Visible to the user
+2. Handles presentation logic (Angular, React, Ember JS)
+3. Does not expose backend logic to the user
+4. Talks to the API layer to get or send data
+
+
+API LAYER
+---------
+1. Handles business logic
+2. Built with frameworks like Java Spring, Express JS, FastAPI (Python)
+3. Acts as the middle layer between the UI and the database
+4. Endpoint: a URL the UI calls, which returns only the result without revealing the logic
+
+
+DATABASE LAYER
+--------------
+1. Handles data logic
+2. Stores data in an organized way
+3. Only accessed through the API layer
+
+
+HTTP METHODS
+------------
+1. GET: Used to pull the data from the DB
+2. POST: Used to insert data into DB
+3. PUT: Used to update data in DB
+4. DELETE: Used to delete data from DB
+
+Real time example: WORKING OF FACEBOOK
+1. Homepage / Landing Page: When the user opens the app, the first thing they see is their feed. This is handled by GET, which requests the data from the API, and the API pulls it from the database.
+2. Create a post: When the user creates a post on Facebook, POST is used. It sends the new data (the user's post) to the API, and the API inserts it into the database. The same method is used for other new actions, such as adding a comment, sharing a post, or liking a post.
+3. Modify a comment: When the user edits a comment that has already been posted, PUT is used. It sends the updated comment to the API, and the API updates the existing data in the database.
+4. Delete a post: When the user deletes a post or comment, DELETE is used. It tells the API which item to remove, and the API deletes that data from the database.
+
+
+JSON
+----
+1. JSON is a cross-language data format.
+2. Applications built with different technologies (.NET, Java, React, Python) can all read and write it.
+3. It is also human-readable, since it is just text with key-value pairs.
+4. APIs use JSON to send data to many different applications.
+
+Examples of APIs that return JSON:
+1. Stock Market Report API: provides live share prices to apps and websites.
+2. Cricket Score API: provides live scores to apps and news sites.
+3. Weather Report API: the weather department (such as IMD) provides data, and news channels, mobile phones and other apps fetch and display it.
+
+
+HTTP STATUS CODES
+-----------------
+1. Every API response has a status code.
+2. It tells whether the request worked or failed.
+
+Codes:
+1. 200 - OK: operation executed successfully
+2. 201 - Created: new data created successfully
+3. 401 - Unauthorized: not logged in or invalid credentials
+4. 404 - Not Found: URL or item does not exist
+5. 500 - Internal Server Error: problem on the server
