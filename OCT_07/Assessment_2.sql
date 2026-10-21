@@ -1,4 +1,3 @@
--- DATA SETUP 
 CREATE DATABASE airline_assessment;
 USE airline_assessment;
 
@@ -86,7 +85,6 @@ WHERE ticket_price > 15000
   AND destination_city IN ('Dubai', 'Singapore');
 
 -- 4. Increase the price of all SkyJet flights by 5%
---    (If Workbench safe mode blocks this, run: SET SQL_SAFE_UPDATES = 0;)
 UPDATE flights
 SET ticket_price = ticket_price * 1.05
 WHERE airline = 'SkyJet';
