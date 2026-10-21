@@ -1,8 +1,5 @@
--- ==================== DATA SETUP ====================
 CREATE DATABASE IF NOT EXISTS sql_practice_pack;
 USE sql_practice_pack;
-
-DROP TABLE IF EXISTS insurance_claims;
 
 CREATE TABLE insurance_claims (
     claim_id INT PRIMARY KEY,
@@ -25,7 +22,7 @@ INSERT INTO insurance_claims VALUES
 (10, 'Farah Ahmed', 'Travel', 35000, 'Hyderabad');
 
 
--- ==================== CTE EXERCISES ====================
+--  CTE EXERCISES 
 
 -- 1. CTE calculating total claims by insurance type
 WITH type_total AS (
@@ -43,7 +40,7 @@ WITH branch_total AS (
 )
 SELECT * FROM branch_total;
 
--- 3. Insurance types whose total claim amount exceeds 200000 (Result: Health)
+-- 3. Insurance types whose total claim amount exceeds 200000 
 WITH type_total AS (
     SELECT insurance_type, SUM(claim_amount) AS total_claims
     FROM insurance_claims
@@ -89,8 +86,7 @@ JOIN type_total t   ON c.insurance_type = t.insurance_type
 JOIN branch_total b ON c.branch = b.branch;
 
 
--- ==================== CORRELATED SUBQUERY EXERCISES ====================
-
+-- CORRELATED SUBQUERY EXERCISES 
 -- 7. Claims greater than the average for their own insurance type
 SELECT c.*
 FROM insurance_claims c
