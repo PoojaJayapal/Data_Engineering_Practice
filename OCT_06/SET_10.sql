@@ -61,5 +61,3 @@ SELECT
     SUM(nights) AS total_nights
 FROM hotel_bookings
 GROUP BY hotel_city, room_type WITH ROLLUP;
---   Bangalore 42500 / 7 nights
--- Last row: ALL CITIES | ALL ROOM TYPES | 122000 | 20
