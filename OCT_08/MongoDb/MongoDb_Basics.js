@@ -118,7 +118,7 @@ db.products.updateMany({
 
 db.products.deleteOne({product_id: 104})
 
-------------------------------------------------------------------------------
+-----------------------------------------
 
 db.createCollection("products_schema_demo")
 
