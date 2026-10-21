@@ -1,7 +1,6 @@
 
--- ==================== DATA SETUP ====================
+-- DATA SETUP 
 CREATE DATABASE sql_practice_pack;
-USE sql_practice_pack;
 
 CREATE TABLE menu_items (
     item_id INT PRIMARY KEY,
@@ -21,11 +20,7 @@ INSERT INTO menu_items VALUES
 (7, 'Idli', 'Breakfast', 80, 40),
 (8, 'Fresh Lime', 'Beverage', 90, 0);
 
--- If MySQL Workbench blocks UPDATE or DELETE (safe mode), run this once:
-SET SQL_SAFE_UPDATES = 0;
-
-
--- ==================== EXERCISES ====================
+-- EXERCISES
 
 -- 1. Display all menu items
 SELECT * FROM menu_items;
