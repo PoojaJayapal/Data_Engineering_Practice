@@ -1,6 +1,3 @@
--- ==================== DATA SETUP ====================
-USE sql_practice_pack;
-
 CREATE TABLE vehicles (
     vehicle_id INT PRIMARY KEY,
     vehicle_name VARCHAR(100),
@@ -18,10 +15,6 @@ INSERT INTO vehicles VALUES
 (6, 'Hyundai Creta', 'SUV', 3200, 'Available'),
 (7, 'KTM Duke', 'Bike', 1500, 'Available');
 
-SET SQL_SAFE_UPDATES = 0;
-
-
--- ==================== STORED PROCEDURES ====================
 DELIMITER $$
 
 -- 1. GetAllVehicles
@@ -109,13 +102,13 @@ END$$
 DELIMITER ;
 
 
--- ==================== CALLING THE PROCEDURES ====================
+--  CALLING THE PROCEDURES 
 
-CALL GetAllVehicles();                       -- 1
-CALL GetAvailableVehicles();                 -- 2 (Result: 5 vehicles)
-CALL GetVehiclesByType('SUV');               -- 3 (Result: Thar, Creta)
-CALL GetVehiclesByMaxRate(2500);             -- 4 (Result: Honda City, Royal Enfield, Activa, KTM Duke)
-CALL UpdateDailyRate(1, 2800);               -- 5 (Honda City becomes 2800)
-CALL ChangeVehicleStatus(3, 'Available');    -- 6 (Royal Enfield becomes Available)
-CALL IncreaseDailyRate(10);                  -- 7 (all rates go up by 10%)
-CALL DeleteVehicle(7);                       -- 8 (KTM Duke is
+CALL GetAllVehicles();                      
+CALL GetAvailableVehicles();                 
+CALL GetVehiclesByType('SUV');               
+CALL GetVehiclesByMaxRate(2500);             
+CALL UpdateDailyRate(1, 2800);               
+CALL ChangeVehicleStatus(3, 'Available');    
+CALL IncreaseDailyRate(10);                  
+CALL DeleteVehicle(7);                       
