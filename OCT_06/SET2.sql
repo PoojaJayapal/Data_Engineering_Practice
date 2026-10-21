@@ -1,7 +1,3 @@
--- ==================== DATA SETUP ====================
-USE sql_practice_pack;
--- (If you are starting fresh, run first: CREATE DATABASE sql_practice_pack;)
-
 CREATE TABLE food_orders (
     order_id INT PRIMARY KEY,
     restaurant VARCHAR(100),
@@ -27,25 +23,24 @@ INSERT INTO food_orders VALUES
 (112, 'Curry House', 'Bangalore', 'Indian', 880, 'Ravi', '2026-09-06');
 
 
--- ==================== EXERCISES ====================
-
--- 1. Total number of orders (Result: 12)
+-- EXERCISES
+-- 1. Total number of orders
 SELECT COUNT(*) AS total_orders
 FROM food_orders;
 
--- 2. Total revenue (Result: 12180)
+-- 2. Total revenue
 SELECT SUM(order_amount) AS total_revenue
 FROM food_orders;
 
--- 3. Average order value (Result: 1015)
+-- 3. Average order value
 SELECT AVG(order_amount) AS avg_order_value
 FROM food_orders;
 
--- 4. Highest order amount (Result: 2100)
+-- 4. Highest order amount 
 SELECT MAX(order_amount) AS highest_order
 FROM food_orders;
 
--- 5. Lowest order amount (Result: 430)
+-- 5. Lowest order amount 
 SELECT MIN(order_amount) AS lowest_order
 FROM food_orders;
 
@@ -69,28 +64,25 @@ SELECT delivery_partner, SUM(order_amount) AS total_revenue
 FROM food_orders
 GROUP BY delivery_partner;
 
--- 10. Cities having more than 3 orders (Result: Hyderabad and Mumbai)
+-- 10. Cities having more than 3 orders
 SELECT city, COUNT(*) AS total_orders
 FROM food_orders
 GROUP BY city
 HAVING COUNT(*) > 3;
 
 -- 11. Restaurants generating more than 2000 revenue
---     (Result: Spice Hub, Curry House, Sushi World)
 SELECT restaurant, SUM(order_amount) AS total_revenue
 FROM food_orders
 GROUP BY restaurant
 HAVING SUM(order_amount) > 2000;
 
 -- 12. Delivery partners whose average order amount exceeds 800
---     (Result: Ravi, Kiran, Aman)
 SELECT delivery_partner, AVG(order_amount) AS avg_order_amount
 FROM food_orders
 GROUP BY delivery_partner
 HAVING AVG(order_amount) > 800;
 
 -- 13. Food types whose total revenue exceeds 2500
---     (Result: Indian, Fast Food, Japanese)
 SELECT food_type, SUM(order_amount) AS total_revenue
 FROM food_orders
 GROUP BY food_type
@@ -102,7 +94,7 @@ FROM food_orders
 GROUP BY city
 ORDER BY total_revenue DESC;
 
--- 15. Top-performing restaurant based on revenue (Result: Sushi World, 3900)
+-- 15. Top-performing restaurant based on revenue
 SELECT restaurant, SUM(order_amount) AS total_revenue
 FROM food_orders
 GROUP BY restaurant
