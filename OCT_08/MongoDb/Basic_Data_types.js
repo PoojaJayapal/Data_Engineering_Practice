@@ -1,9 +1,3 @@
-/**
- * MongoDB Data Types Practice Submission
- * Database: retail_db
- * Collection: datatype_practice
- */
-
 // --- Prepare the data ---
 use retail_db
 
@@ -116,31 +110,18 @@ price_type: {$type:"$price"},_id:0 })
 
 
 // 18. Find the datatype of the available field.
-way 1 - db.datatype_practice.aggregate([
+db.datatype_practice.aggregate([
   { $project: { _id: 0, available_type: { $type: "$available" } } }
 ])
 
-way 2 - db.datatype_practice.find(
-  {},
-{available:1,
-available_type: {$type:"$available"},_id:0 })
 
 // 19. Find the datatype of the launch_date field.
-way 1 - db.datatype_practice.aggregate([
+db.datatype_practice.aggregate([
   { $project: { _id: 0, launch_date_type: { $type: "$launch_date" } } }
 ])
 
-way 2 - db.datatype_practice.find(
-  {},
-{launch_date:1,
-launch_date_type: {$type:"$launch_date"},_id:0 })
 
 // 20. Find the datatype of the colors field.
-way 1 - db.datatype_practice.aggregate([
+ db.datatype_practice.aggregate([
   { $project: { _id: 0, colors_type: { $type: "$colors" } } }
 ])
-
-way 2 - db.datatype_practice.find(
-  {},
-{colors:1,
-colors_type: {$type:"$colors"},_id:0 })
