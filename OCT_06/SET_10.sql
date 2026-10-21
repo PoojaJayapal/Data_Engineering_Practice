@@ -1,6 +1,3 @@
-
--- 1. CREATE TABLE
-
 CREATE TABLE hotel_bookings (
     booking_id INT PRIMARY KEY,
     hotel_city VARCHAR(50),
@@ -8,9 +5,6 @@ CREATE TABLE hotel_bookings (
     nights INT,
     amount DECIMAL(10,2)
 );
-
-
--- 2. INSERT RECORDS
 
 INSERT INTO hotel_bookings VALUES
 (1, 'Hyderabad', 'Standard', 2, 6000),
@@ -24,59 +18,48 @@ INSERT INTO hotel_bookings VALUES
 (9, 'Bangalore', 'Suite', 2, 20000);
 
 
--- 3. DISPLAY ALL RECORDS
-
-SELECT * FROM hotel_bookings;
-
-
--- 4. FIND TOTAL REVENUE BY CITY
-
+-- 1. Total revenue by city
 SELECT hotel_city, SUM(amount) AS total_revenue
 FROM hotel_bookings
 GROUP BY hotel_city;
 
-
--- 5. FIND TOTAL REVENUE BY ROOM TYPE
-
+-- 2. Total revenue by room type
 SELECT room_type, SUM(amount) AS total_revenue
 FROM hotel_bookings
 GROUP BY room_type;
 
 
--- 6. GROUP BY CITY AND ROOM TYPE
-
-SELECT hotel_city, room_type,
-       SUM(amount) AS total_revenue
+-- 3. Group by city and room type
+SELECT hotel_city, room_type, SUM(amount) AS total_revenue
 FROM hotel_bookings
 GROUP BY hotel_city, room_type;
 
 
--- 7. PRODUCE CITY-WISE SUBTOTALS USING WITH ROLLUP
-
+-- 4. City-wise subtotals using WITH ROLLUP
 SELECT hotel_city, SUM(amount) AS total_revenue
 FROM hotel_bookings
 GROUP BY hotel_city WITH ROLLUP;
 
 
--- 8. PRODUCE A GRAND TOTAL
-
+-- 5. Grand total
 SELECT SUM(amount) AS grand_total
 FROM hotel_bookings;
 
 
--- 9. CALCULATE TOTAL NIGHTS BY CITY AND ROOM TYPE
-
-SELECT hotel_city, room_type,
-       SUM(nights) AS total_nights
+-- 6. Total nights by city and room type
+SELECT hotel_city, room_type, SUM(nights) AS total_nights
 FROM hotel_bookings
 GROUP BY hotel_city, room_type;
 
-
--- 10. DISPLAY SUBTOTALS AND OVERALL TOTALS
--- IN THE SAME RESULT
-
-SELECT hotel_city, room_type,
-       SUM(amount) AS total_revenue
+-- 7. Subtotals and overall totals in the same result
+SELECT
+    CASE WHEN GROUPING(hotel_city) = 1 THEN 'ALL CITIES'
+         ELSE hotel_city END AS hotel_city,
+    CASE WHEN GROUPING(room_type) = 1 THEN 'ALL ROOM TYPES'
+         ELSE room_type END AS room_type,
+    SUM(amount) AS total_revenue,
+    SUM(nights) AS total_nights
 FROM hotel_bookings
 GROUP BY hotel_city, room_type WITH ROLLUP;
-```
+--   Bangalore 42500 / 7 nights
+-- Last row: ALL CITIES | ALL ROOM TYPES | 122000 | 20
