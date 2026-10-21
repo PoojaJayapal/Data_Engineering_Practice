@@ -1,16 +1,9 @@
-
-
--- 1. CREATE TABLE
-
 CREATE TABLE staff_hierarchy (
     employee_id INT PRIMARY KEY,
     employee_name VARCHAR(100),
     manager_id INT,
     designation VARCHAR(100)
 );
-
-
--- 2. INSERT RECORDS
 
 INSERT INTO staff_hierarchy VALUES
 (1, 'Raj Malhotra', NULL, 'CEO'),
@@ -26,35 +19,28 @@ INSERT INTO staff_hierarchy VALUES
 (11, 'Pooja Jain', 10, 'Sales Executive');
 
 
--- 3. DISPLAY ALL RECORDS
-
-SELECT * FROM staff_hierarchy;
-
-
--- 4. FIND EMPLOYEES HAVING NO MANAGER
-
-SELECT *
+-- 1. Employees having no manager
+SELECT employee_id, employee_name, designation
 FROM staff_hierarchy
 WHERE manager_id IS NULL;
+-- Raj Malhotra (CEO)
 
-
--- 5. FIND DIRECT REPORTS OF THE CEO
-
-SELECT *
+-- 2. Direct reports of the CEO
+SELECT employee_id, employee_name, designation
 FROM staff_hierarchy
-WHERE manager_id = 1;
+WHERE manager_id = (SELECT employee_id
+                    FROM staff_hierarchy
+                    WHERE designation = 'CEO');
 
-
--- 6. FIND DIRECT REPORTS OF THE CTO
-
-SELECT *
+-- 3. Direct reports of the CTO
+SELECT employee_id, employee_name, designation
 FROM staff_hierarchy
-WHERE manager_id = 2;
+WHERE manager_id = (SELECT employee_id
+                    FROM staff_hierarchy
+                    WHERE designation = 'CTO');
 
-
--- 7. DISPLAY THE COMPLETE HIERARCHY USING RECURSIVE CTE
-
-WITH RECURSIVE company_hierarchy AS (
+-- 4. Recursive CTE to display the complete hierarchy
+WITH RECURSIVE org AS (
     SELECT employee_id, employee_name, manager_id, designation
     FROM staff_hierarchy
     WHERE manager_id IS NULL
@@ -63,125 +49,98 @@ WITH RECURSIVE company_hierarchy AS (
 
     SELECT s.employee_id, s.employee_name, s.manager_id, s.designation
     FROM staff_hierarchy s
-    JOIN company_hierarchy h
-        ON s.manager_id = h.employee_id
+    JOIN org o ON s.manager_id = o.employee_id
 )
-SELECT *
-FROM company_hierarchy;
-
-
--- 8. DISPLAY HIERARCHY WITH LEVEL NUMBERS
-
-WITH RECURSIVE company_hierarchy AS (
-    SELECT employee_id, employee_name, manager_id,
-           designation, 1 AS hierarchy_level
+SELECT * FROM org;
+-- 5. Add a hierarchy level to the result
+WITH RECURSIVE org AS (
+    SELECT employee_id, employee_name, manager_id, designation, 1 AS level_no
     FROM staff_hierarchy
     WHERE manager_id IS NULL
 
     UNION ALL
 
-    SELECT s.employee_id, s.employee_name, s.manager_id,
-           s.designation, h.hierarchy_level + 1
+    SELECT s.employee_id, s.employee_name, s.manager_id, s.designation, o.level_no + 1
     FROM staff_hierarchy s
-    JOIN company_hierarchy h
-        ON s.manager_id = h.employee_id
+    JOIN org o ON s.manager_id = o.employee_id
 )
-SELECT *
-FROM company_hierarchy
-ORDER BY hierarchy_level, employee_id;
+SELECT * FROM org
+ORDER BY level_no, employee_id;
 
-
--- 9. FIND ALL EMPLOYEES WORKING BELOW MEERA SHAH
-
-WITH RECURSIVE employee_tree AS (
+-- 6. All employees working below Meera Shah
+WITH RECURSIVE team AS (
     SELECT employee_id, employee_name, manager_id, designation
     FROM staff_hierarchy
-    WHERE employee_id = 2
+    WHERE manager_id = (SELECT employee_id
+                        FROM staff_hierarchy
+                        WHERE employee_name = 'Meera Shah')
 
     UNION ALL
 
     SELECT s.employee_id, s.employee_name, s.manager_id, s.designation
     FROM staff_hierarchy s
-    JOIN employee_tree e
-        ON s.manager_id = e.employee_id
+    JOIN team t ON s.manager_id = t.employee_id
 )
-SELECT *
-FROM employee_tree
-WHERE employee_id <> 2;
-
-
--- 10. FIND EVERYONE WORKING BELOW AMAN KHAN
-
-WITH RECURSIVE employee_tree AS (
+SELECT * FROM team;
+-- 7. Everyone working below Aman Khan
+WITH RECURSIVE team AS (
     SELECT employee_id, employee_name, manager_id, designation
     FROM staff_hierarchy
-    WHERE employee_id = 4
+    WHERE manager_id = (SELECT employee_id
+                        FROM staff_hierarchy
+                        WHERE employee_name = 'Aman Khan')
 
     UNION ALL
 
     SELECT s.employee_id, s.employee_name, s.manager_id, s.designation
     FROM staff_hierarchy s
-    JOIN employee_tree e
-        ON s.manager_id = e.employee_id
+    JOIN team t ON s.manager_id = t.employee_id
 )
-SELECT *
-FROM employee_tree
-WHERE employee_id <> 4;
+SELECT * FROM team;
 
-
--- 11. DISPLAY EMPLOYEE-MANAGER RELATIONSHIPS
-
-SELECT
-    e.employee_name AS employee,
-    m.employee_name AS manager
+-- 8. Employee -> manager relationships
+SELECT e.employee_name AS employee,
+       e.designation   AS employee_designation,
+       m.employee_name AS manager,
+       m.designation   AS manager_designation
 FROM staff_hierarchy e
-LEFT JOIN staff_hierarchy m
-    ON e.manager_id = m.employee_id;
-
-
--- 12. COUNT EMPLOYEES AT EACH HIERARCHY LEVEL
-
-WITH RECURSIVE company_hierarchy AS (
-    SELECT employee_id, employee_name, manager_id,
-           1 AS hierarchy_level
+LEFT JOIN staff_hierarchy m ON e.manager_id = m.employee_id
+ORDER BY e.employee_id;
+-- 9. How many employees are at each hierarchy level
+WITH RECURSIVE org AS (
+    SELECT employee_id, manager_id, 1 AS level_no
     FROM staff_hierarchy
     WHERE manager_id IS NULL
 
     UNION ALL
 
-    SELECT s.employee_id, s.employee_name, s.manager_id,
-           h.hierarchy_level + 1
+    SELECT s.employee_id, s.manager_id, o.level_no + 1
     FROM staff_hierarchy s
-    JOIN company_hierarchy h
-        ON s.manager_id = h.employee_id
+    JOIN org o ON s.manager_id = o.employee_id
 )
-SELECT
-    hierarchy_level,
-    COUNT(*) AS employee_count
-FROM company_hierarchy
-GROUP BY hierarchy_level
-ORDER BY hierarchy_level;
+SELECT level_no, COUNT(*) AS total_employees
+FROM org
+GROUP BY level_no
+ORDER BY level_no;
 
-
--- 13. DISPLAY ORGANIZATION PATH FROM CEO DOWNWARD
-
-WITH RECURSIVE organization AS (
-    SELECT employee_id, employee_name, manager_id,
-           designation,
-           CAST(employee_name AS CHAR(1000)) AS hierarchy_path
+-- 10. Organization starting with CEO and moving downward recursively
+WITH RECURSIVE org AS (
+    SELECT employee_id, employee_name, designation, manager_id,
+           1 AS level_no,
+           CAST(LPAD(employee_id, 3, '0') AS CHAR(200)) AS sort_path
     FROM staff_hierarchy
     WHERE manager_id IS NULL
 
     UNION ALL
 
-    SELECT s.employee_id, s.employee_name, s.manager_id,
-           s.designation,
-           CONCAT(o.hierarchy_path, ' -> ', s.employee_name)
+    SELECT s.employee_id, s.employee_name, s.designation, s.manager_id,
+           o.level_no + 1,
+           CONCAT(o.sort_path, '/', LPAD(s.employee_id, 3, '0'))
     FROM staff_hierarchy s
-    JOIN organization o
-        ON s.manager_id = o.employee_id
+    JOIN org o ON s.manager_id = o.employee_id
 )
-SELECT *
-FROM organization
-ORDER BY employee_id;
-```
+SELECT CONCAT(REPEAT('    ', level_no - 1), employee_name) AS org_chart,
+       designation,
+       level_no
+FROM org
+ORDER BY sort_path;
