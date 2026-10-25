@@ -41,7 +41,7 @@ CREATE INDEX idx_products_name ON products(product_name);
 CREATE INDEX idx_stores_region ON stores(region);
 CREATE INDEX idx_sales_product ON sales(product_id);
 
--- SAMPLE DATA (5 rows each)
+-- SAMPLE DATA
 INSERT INTO stores (store_name, region) VALUES
     ('Downtown',  'West'),
     ('Lakeside',  'Midwest'),
