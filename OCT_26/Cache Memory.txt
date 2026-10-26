@@ -1,0 +1,10 @@
+Cache Memory:
+
+Cache memory is a small, high-speed storage layer that holds frequently used data so it can be retrieved quickly. When the same request is made again, the data is served directly from the cache instead of being fetched from the backend (database or main memory) every time. This reduces response time and lowers the load on the backend.
+
+Example:
+Amazon receives millions of requests per second (for example, around 2 million). The home page shows the same products and offers to most users. Instead of querying the backend for every single request, the system fetches this data once, stores it in the cache, and serves all later requests from there. This saves time and reduces backend load.
+
+Cache hit: the requested data is found in the cache (fast).
+Cache miss: the data is not in the cache, so it is fetched from the backend and then stored in the cache for next time.
+
