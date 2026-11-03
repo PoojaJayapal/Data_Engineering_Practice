@@ -65,5 +65,3 @@ DELETE FROM tasks WHERE task_id = 2;
 -- Delete a wrongly created attendance record
 DELETE FROM attendance WHERE employee_id = 1 AND work_date = CURDATE();
 
--- Soft-delete is safer for employees (keeps history)
-UPDATE employees SET status = 'INACTIVE' WHERE employee_id = 11;
