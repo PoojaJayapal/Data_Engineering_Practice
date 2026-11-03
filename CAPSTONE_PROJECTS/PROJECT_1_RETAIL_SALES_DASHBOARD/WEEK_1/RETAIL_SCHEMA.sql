@@ -1,99 +1,144 @@
--- MySQL: schema, CRUD, stored procedure, indexes
+
 CREATE DATABASE IF NOT EXISTS retail_db;
 USE retail_db;
 
--- TABLES
-CREATE TABLE stores (
-    store_id   INT AUTO_INCREMENT PRIMARY KEY,
-    store_name VARCHAR(100) NOT NULL,
-    region     VARCHAR(50)  NOT NULL
+--Create MySQL tables for products, stores, sales, and employees
+CREATE TABLE products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100),
+    category VARCHAR(50),
+    price DECIMAL(10,2),
+    stock_quantity INT
 );
-
+CREATE TABLE stores (
+    store_id INT PRIMARY KEY AUTO_INCREMENT,
+    store_name VARCHAR(100),
+    city VARCHAR(50),
+    state VARCHAR(50)
+);
 CREATE TABLE employees (
-    employee_id INT AUTO_INCREMENT PRIMARY KEY,
-    store_id    INT NOT NULL,
-    name        VARCHAR(100) NOT NULL,
-    role        VARCHAR(50),
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_name VARCHAR(100),
+    department VARCHAR(50),
+    salary DECIMAL(10,2),
+    store_id INT,
     FOREIGN KEY (store_id) REFERENCES stores(store_id)
 );
-
-CREATE TABLE products (
-    product_id   INT AUTO_INCREMENT PRIMARY KEY,
-    product_name VARCHAR(100) NOT NULL,
-    price        DECIMAL(10,2) NOT NULL
-);
-
 CREATE TABLE sales (
-    sale_id     INT AUTO_INCREMENT PRIMARY KEY,
-    store_id    INT NOT NULL,
-    product_id  INT NOT NULL,
-    employee_id INT NOT NULL,
-    quantity    INT NOT NULL,
-    amount      DECIMAL(10,2) NOT NULL,
-    sale_date   DATE NOT NULL,
-    FOREIGN KEY (store_id)    REFERENCES stores(store_id),
-    FOREIGN KEY (product_id)  REFERENCES products(product_id),
+    sale_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT,
+    store_id INT,
+    employee_id INT,
+    quantity INT,
+    sale_date DATE,
+    total_amount DECIMAL(10,2),
+
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (store_id) REFERENCES stores(store_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
--- INDEXES (search by product and region)
-CREATE INDEX idx_products_name ON products(product_name);
-CREATE INDEX idx_stores_region ON stores(region);
-CREATE INDEX idx_sales_product ON sales(product_id);
 
--- SAMPLE DATA
-INSERT INTO stores (store_name, region) VALUES
-    ('Downtown',  'West'),
-    ('Lakeside',  'Midwest'),
-    ('Harbor',    'East'),
-    ('Sunset',    'South'),
-    ('Hilltop',   'North');
+-- SAMPLE DATA for stores
 
-INSERT INTO employees (store_id, name, role) VALUES
-    (1, 'Maria',  'Manager'),
-    (2, 'Priya',  'Cashier'),
-    (3, 'Daniel', 'Supervisor'),
-    (4, 'Sofia',  'Sales Associate'),
-    (5, 'Arjun',  'Cashier');
+INSERT INTO stores (store_name, city, state)
+VALUES
+('Chennai Store', 'Chennai', 'Tamil Nadu'),
+('Bangalore Store', 'Bangalore', 'Karnataka'),
+('Hyderabad Store', 'Hyderabad', 'Telangana'),
+('Coimbatore Store', 'Coimbatore', 'Tamil Nadu');
 
-INSERT INTO products (product_name, price) VALUES
-    ('Headphones',    89.99),
-    ('Coffee Maker',  59.50),
-    ('Yoga Mat',      24.99),
-    ('Running Jacket',74.25),
-    ('Smart Watch',  199.00);
+-- SAMPLE DATA for employees
 
--- CRUD ON SALES
--- Create
-INSERT INTO sales (store_id, product_id, employee_id, quantity, amount, sale_date) VALUES
-    (1, 1, 1, 2, 179.98, '2025-01-15'),
-    (1, 2, 1, 1,  59.50, '2025-01-15'),
-    (2, 1, 2, 1,  89.99, '2025-01-15'),
-    (3, 3, 3, 3,  74.97, '2025-01-16'),
-    (4, 4, 4, 2, 148.50, '2025-01-16'),
-    (5, 5, 5, 1, 199.00, '2025-01-17');
+INSERT INTO employees (employee_name, department, salary, store_id)
+VALUES
+('Arun', 'Sales', 30000, 1),
+('Priya', 'Sales', 35000, 1),
+('Rahul', 'Marketing', 40000, 2),
+('Sneha', 'Sales', 32000, 2),
+('Karthik', 'Sales', 28000, 3),
+('Divya', 'Marketing', 38000, 4),
+('Vijay', 'Sales', 31000, 3);
 
--- Read
+-- SAMPLE DATA for products
+
+INSERT INTO products (product_name, category, price, stock_quantity)
+VALUES
+('Laptop', 'Electronics', 55000, 20),
+('Mobile', 'Electronics', 25000, 30),
+('Headphones', 'Accessories', 2000, 50),
+('Keyboard', 'Accessories', 1500, 40),
+('Monitor', 'Electronics', 12000, 15),
+('Mouse', 'Accessories', 800, 60),
+('Tablet', 'Electronics', 30000, 25);
+
+-- SAMPLE DATA for sales
+
+INSERT INTO sales (product_id, store_id, employee_id, quantity, sale_date, total_amount)
+VALUES
+(1, 1, 1, 2, '2026-10-01', 110000),
+(2, 1, 2, 3, '2026-10-02', 75000),
+(3, 2, 3, 5, '2026-10-03', 10000),
+(4, 2, 4, 4, '2026-10-04', 6000),
+(5, 3, 5, 2, '2026-10-05', 24000),
+(6, 3, 7, 10, '2026-10-06', 8000),
+(7, 4, 6, 1, '2026-10-07', 30000),
+(1, 2, 3, 1, '2026-10-08', 55000),
+(2, 3, 5, 2, '2026-10-09', 50000),
+(3, 4, 6, 3, '2026-10-10', 6000);
+
+-- Insert sales data with CRUD operations
+--1.CREATE 
+INSERT INTO sales
+(product_id, store_id, employee_id, quantity, sale_date, total_amount)
+VALUES
+(4, 1, 1, 2, '2026-11-01', 3000);
+--2.READ
 SELECT * FROM sales;
+--3.UPDATE 
+UPDATE sales
+SET quantity = 5
+WHERE sale_id = 1;
+--4.DELETE
+DELETE FROM sales
+WHERE sale_id = 14;
 
--- Update
-UPDATE sales SET quantity = 3, amount = 269.97 WHERE sale_id = 1;
+-- Write a stored procedure to calculate daily sales for a store
+DELIMITER //
 
--- Delete
-DELETE FROM sales WHERE sale_id = 3;
-
--- STORED PROCEDURE: daily sales for a store
-DELIMITER $$
-CREATE PROCEDURE daily_sales(IN p_store_id INT, IN p_date DATE)
+CREATE PROCEDURE daily_sales(IN p_store_id INT)
 BEGIN
-    SELECT store_id, sale_date,
-           COUNT(*)       AS total_sales,
-           SUM(quantity)  AS total_units,
-           SUM(amount)    AS total_revenue
+    SELECT
+        sale_date,
+        store_id,
+        SUM(total_amount) AS daily_sales
     FROM sales
-    WHERE store_id = p_store_id AND sale_date = p_date
-    GROUP BY store_id, sale_date;
-END $$
-DELIMITER ;
+    WHERE store_id = p_store_id
+    GROUP BY sale_date, store_id
+    ORDER BY sale_date;
+END //
 
-CALL daily_sales(1, '2025-01-15');
+DELIMITER ;
+CALL daily_sales(1);
+
+--Add indexes to search by product and region
+--1. Index on product
+CREATE INDEX idx_product
+ON sales(product_id);
+--2. Index on region (state)
+CREATE INDEX idx_region
+ON stores(state);
+
+--searches using product ID
+SELECT *
+FROM sales
+WHERE product_id = 2;
+
+--searches using region(state)
+SELECT *
+FROM stores
+WHERE state = 'Tamil Nadu';
+
+
+
+
