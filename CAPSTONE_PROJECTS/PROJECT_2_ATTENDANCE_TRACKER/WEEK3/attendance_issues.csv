@@ -1,0 +1,5 @@
+department,total_absences,total_late_logins,total_records,issue_rate_%
+Engineering,2,12,30,46.67
+Finance,1,13,30,46.67
+Support,1,6,20,35.0
+Sales,0,6,20,30.0

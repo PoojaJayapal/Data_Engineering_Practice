@@ -1,0 +1,5 @@
+department,avg_work_hours,avg_productivity,total_absences,total_late_logins
+Engineering,7.29,0.25,2,12
+Finance,7.27,0.35,1,13
+Sales,7.4,0.28,0,6
+Support,7.27,0.3,1,6
