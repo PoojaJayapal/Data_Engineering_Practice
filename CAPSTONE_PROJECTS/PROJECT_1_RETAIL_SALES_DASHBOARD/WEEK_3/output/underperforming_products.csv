@@ -1,0 +1,4 @@
+product_id,product_name,category,units_sold,total_revenue,units_returned,return_rate,reason
+3,Yoga Mat,Sports,3704,84985.52,87,0.0235,low sales
+4,Running Jacket,Apparel,5304,360870.89,764,0.144,low sales + high returns
+2,Coffee Maker,Home,7642,417563.15,317,0.0415,low sales
