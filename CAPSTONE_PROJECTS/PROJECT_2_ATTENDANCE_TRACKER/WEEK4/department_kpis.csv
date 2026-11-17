@@ -1,0 +1,6 @@
+department,avg_work_hours,avg_productivity,total_work_hours,total_absences,total_late_logins,total_records,absence_rate_%,late_rate_%
+Engineering,6.89,0.3,152485.54,1104,7760,22134,4.99,35.06
+Finance,6.88,0.3,153788.46,1158,7663,22351,5.18,34.28
+HR,6.88,0.3,126823.47,949,6361,18445,5.15,34.49
+Sales,6.89,0.3,153907.69,1114,7828,22351,4.98,35.02
+Support,6.9,0.3,160317.53,1118,8166,23219,4.82,35.17
