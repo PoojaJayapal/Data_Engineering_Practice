@@ -1,18 +1,10 @@
-"""Week 3 - PySpark store-level insights
-
-1. Load the large sales file
-2. Filter underperforming products (low sales or high returns)
-3. Group by store and calculate average monthly revenue
-4. Save both results as CSV files in output/
-"""
 from pathlib import Path
 
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
-# ----- Settings (change these if you want different rules) -----
-RETURN_RATE_LIMIT = 0.10      # flag products with more than 10% of units returned
-# "Low sales" = product revenue below the average product revenue
+
+RETURN_RATE_LIMIT = 0.10      
 
 BASE_DIR = Path(__file__).parent
 INPUT_FILE = BASE_DIR / "data" / "sales_large.csv"
@@ -26,23 +18,21 @@ def main():
              .getOrCreate())
     spark.sparkContext.setLogLevel("ERROR")
 
-    # ------------------------------------------------------------
     # 1. LOAD
-    # ------------------------------------------------------------
+   
     sales = (spark.read
              .option("header", True)
              .option("inferSchema", True)
              .csv(str(INPUT_FILE)))
     print(f"Rows loaded: {sales.count():,}")
 
-    # Revenue per sale (after discount)
+  
     sales = sales.withColumn(
         "revenue",
         F.round(F.col("quantity") * F.col("price") * (1 - F.col("discount_pct") / 100), 2))
 
-    # ------------------------------------------------------------
-    # 2. FILTER: underperforming products
-    # ------------------------------------------------------------
+    # 2. FILTER
+  
     products = (sales.groupBy("product_id", "product_name", "category")
                 .agg(F.sum("quantity").alias("units_sold"),
                      F.round(F.sum("revenue"), 2).alias("total_revenue"),
@@ -69,9 +59,7 @@ def main():
     print("\n=== UNDERPERFORMING PRODUCTS ===")
     underperforming.show(truncate=False)
 
-    # ------------------------------------------------------------
-    # 3. GROUP BY STORE: average monthly revenue
-    # ------------------------------------------------------------
+    #3 GROUP BY
     monthly = (sales
                .withColumn("month", F.date_format(F.to_date("sale_date"), "yyyy-MM"))
                .groupBy("store_id", "month")
@@ -86,9 +74,7 @@ def main():
     print("=== STORE SUMMARY (average monthly revenue) ===")
     store_summary.show()
 
-    # ------------------------------------------------------------
-    # 4. SAVE (results are small, so write as single CSV files)
-    # ------------------------------------------------------------
+    #4 SAVE
     OUTPUT_DIR.mkdir(exist_ok=True)
     underperforming.toPandas().to_csv(OUTPUT_DIR / "underperforming_products.csv", index=False)
     store_summary.toPandas().to_csv(OUTPUT_DIR / "store_summary.csv", index=False)
